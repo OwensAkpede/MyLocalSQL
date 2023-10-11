@@ -107,7 +107,7 @@ class LocalSQL
 
 class Table
 {
-  public $DB;
+  private $DB;
   public function __construct(mysqli $DB) {
     $this->DB = $DB;
   }
@@ -177,8 +177,8 @@ if ($result) {
 
 class Item
 {
-  public $DB;
-  public $name;
+  private $DB;
+  private $name;
   public function __construct(string $name, mysqli $DB) {
     $this->name = $name;
     $this->DB = $DB;
@@ -281,14 +281,10 @@ class Item
 function __san__(string $v, $is_val) {
   if ($is_val === TRUE) {
     $v = preg_replace("/(['])/i", "\\\\$0", $v);
-    //echo($v);
   } else {
-    // $v = preg_replace("/[\n ]/i", "", $v);
-    // $v = preg_replace("/[^a-z0-9]/i", "_", $v);
     $v = preg_replace("/\n\r|\n|\r\n/i", " ", $v);
     $v = preg_replace("/([`'])/i", "\\\\$0", $v);
   }
-
   return $v;
 }
 function __openDB__($name, $self, $DB) {
