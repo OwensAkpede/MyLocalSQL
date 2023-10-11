@@ -220,9 +220,12 @@ This method returns an array object 🍻.
 # PHP Version Support 🌠
 So far, this framework works on PHP version `7.1.33`, and previous PHP versions are yet to be tested 🎠.
 
-# Show Love 👌
-If you found this framework helpful,
-want to give a shoutout 🙌, 
-or wish to collaborate, 
-don't hesitate to reach out on [Facebook📱](https://facebook.com/owens94819.me). 
-Your feedback and support are greatly appreciated!
+# Conclusion 📜
+
+LocalSQL is a PHP framework that simplifies the process of working with MySQL databases. By providing an intuitive and secure interface, it allows PHP developers to focus on their coding, rather than struggling with complex SQL syntax and worrying about security vulnerabilities.
+
+With LocalSQL, you can easily create and manage databases, tables, and items with straightforward methods. It's a lightweight and user-friendly solution for database interaction, designed to make your development process smoother and more efficient.
+
+We hope you find LocalSQL useful and that it enhances your PHP development experience. If you have any questions, feedback, or would like to collaborate, please don't hesitate to reach out to us on [Facebook📱](https://facebook.com/owens94819.me).
+
+Kudos for choosing LocalSQL, and happy coding! 👷
