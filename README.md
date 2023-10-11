@@ -1,238 +1,228 @@
-# Local SQL 🤖
-  <img src="basic.jpeg" width="300" alt="LocalSQL example image" />
-  
-  LocalSQL is a lightweight framework 
-  aimed to help php developers focus
-  more on php when working with MySQL database,
-  rather than to struggle with not 
-  knowing the exact MySQL syntax to 
-  achieving the secure coding experience 
-  👷
 
-***NOTE: With localSQL you also don't have 
-to worry about SQL injections 💉 👎 💪***
+# LocalSQL 🤖
+![LocalSQL example image](basic.jpeg)
+
+LocalSQL is a lightweight PHP framework designed to simplify database interactions with MySQL. It empowers PHP developers by reducing the need to struggle with complex MySQL syntax and offers a more secure coding experience 👷.
+
+**NOTE**: LocalSQL also provides protection against SQL injections 💉 👎 💪.
 
 # Installation 💻
-  simply download the [localSQL.php](./localSQL.php) file
-  and import it into your project.
-  ```php
-    <?php
-      require_once("./localSQL.php");
-  ```
- 
-# Using localSQL 📝
-  This framework is very simple, easy 
-  to grasps and the naming conversations
-  are simply self explanatory 😎.
-  ```php
-    <?php
-      $localSQL = new LocalSQL("DB_HOST", "DB_USER", "DB_PASSWORD");
-  ```
-## LocalSQL
- the `LocalSQL` is a global class part 
- of the [localSQL.php](./localSQL.php) framework, this
- class takes 3 parameters 💣
- 
-- parameter 1 (DB_HOST): Database host name
-- parameter 2 (DB_USER): Database user name
-- parameter 3 (DB_PASSWORD): Database user password
+To get started with LocalSQL, simply download the [localSQL.php](localSQL.php) file and import it into your project.
 
- here are the methods returned when
- the `LocalSQL` class is called 🎆
+```php
+<?php
+require_once("./localSQL.php");
+```
+
+# Using LocalSQL 📝
+LocalSQL is designed to be straightforward, with self-explanatory naming conventions 😎.
+
+```php
+<?php
+$localSQL = new LocalSQL("DB_HOST", "DB_USER", "DB_PASSWORD");
+```
+
+## LocalSQL Class
+The `LocalSQL` class is the core part of the LocalSQL framework, taking three parameters 💣:
+
+- DB_HOST: Database host name
+- DB_USER: Database user name
+- DB_PASSWORD: Database user password
+
+Here are the methods available when using the `LocalSQL` class 🎆:
+
 ### **openDB**
-   this method will attempt to create
-   a database if the given name
-   doesn't exist, else/then the database
-   is then opened
-   ```php
-    <?php
-      $database = $localSQL->openDB("DB_name");
-  ```
-  this method returns the [Table](#table)
-  instance 😉
-  
+This method creates a database if the given name doesn't exist or opens it if it does.
+
+```php
+<?php
+$database = $localSQL->openDB("DB_name");
+```
+
+This method returns an instance of the [Table class](#table-class) 😉.
+
 ### **removeDB**
-   this method will remove the database
-   name given
-   ```php
-    <?php
-      $result = $localSQL->removeDB("DB_name");
-  ```
-  this method returns TRUE | FALSE 😇
-  
+Use this method to remove a specified database.
+
+```php
+<?php
+$result = $localSQL->removeDB("DB_name");
+```
+
+It returns TRUE or FALSE 😇.
+
 ### **hasDB**
-   this method will check for the database
-   name given
-   ```php
-    <?php
-      $result = $localSQL->hasDB("DB_name");
-  ```
-  this method returns TRUE | FALSE 😰
-  
+Check if a specific database exists using this method.
+
+```php
+<?php
+$result = $localSQL->hasDB("DB_name");
+```
+
+This method returns TRUE or FALSE 😰.
+
 ### **keys**
-   this method will return list of all
-   database names available
-   ```php
-    <?php
-      $result = $localSQL->keys();
-  ```
-  this method returns an Array list 😉
-  
+Retrieve a list of all available database names using this method.
+
+```php
+<?php
+$result = $localSQL->keys();
+```
+
+It returns an array list 😉.
+
 ### **removeAllDB**
-   this method will delete all the databases
-   available
-   ```php
-    <?php
-      $result = $localSQL->removeAllDB();
-  ```
-  this method returns TRUE | FALSE 😇
-  
+Delete all available databases using this method.
+
+```php
+<?php
+$result = $localSQL->removeAllDB();
+```
+
+It returns TRUE or FALSE 😇.
+
 ### **localStorage**
-   this method will automatically 
-   open a [database](#opendb) with the 
-   name `"localStorage"`, then open a 
-   [table](#opentable) with the name 
-   provided on the parameter 🤓
-   ```php
-    <?php
-      $table = $localSQL->localStorage("TABLE_name");
-  ```
-  this method returns the [Item](#item)
-  instance 😇
-  
-___
+Automatically open a [database](#opendb) named "localStorage" and a [table](#opentable) with the specified name.
 
-## Table
- here are the methods returned when
- the [openDB](#opendb) method is called 🤔
+```php
+<?php
+$table = $localSQL->localStorage("TABLE_name");
+```
+
+This method returns an instance of the Item class 😇.
+
+## Table Class
+Here are the methods available when using the [openDB](#opendb) method:
+
 ### **openTable**
-   this method will attempt to create
-   a database table if the given name
-   doesn't exist, else/then the table
-   is then opened
-   ```php
-    <?php
-      $table = $database->openTable("TABLE_name");
-  ```
-  this method returns the [Item](#item)
-  instance 😉
-  
-### **removeTable**
-   this method will remove the table
-   name given
-   ```php
-    <?php
-      $result = $database->removeTable("TABLE_name");
-  ```
-  this method returns TRUE | FALSE 😇
-  
-### **hasTable**
-   this method will check for the table
-   name given
-   ```php
-    <?php
-      $result = $database->hasTable("TABLE_name");
-  ```
-  this method returns TRUE | FALSE 😯
-  
-### **keys**
-   this method will return list of all
-   the table names available
-   ```php
-    <?php
-      $result = $database->keys();
-  ```
-  this method returns an Array list 😱
-  
-### **removeAllTable**
-   this method will delete all the
-   available table from the database
-   ```php
-    <?php
-      $result = $database->removeAllTable();
-  ```
-  this method returns TRUE | FALSE 😇
+This method creates a database table if the given name doesn't exist or opens it if it does.
 
-___
-  
-## Item
- here are the methods returned when
- the [openTable](#opentable) method is called 🙋
-### **setItem**
-   this method will create/set an item
-   inside the database table
-   ```php
-    <?php
-      $result = $table->setItem("name", "value");
-  ```
-  this method returns TRUE | FALSE 😋
-  
-### **getItem**
-   this method will retrieve an item
-   on the database table
-   ```php
-    <?php
-      $item = $table->getItem("name");
-  ```
-  this method return the item value 😊
-  
-### **hasItem**
-   this method will check for an item
-   ```php
-    <?php
-      $result = $table->hasItem("name");
-  ```
-  this method returns TRUE | FALSE 😻
-  
+```php
+<?php
+$table = $database->openTable("TABLE_name");
+```
+
+It returns an instance of the [Item class](#item-class) 😉.
+
+### **removeTable**
+Remove a specified table using this method.
+
+```php
+<?php
+$result = $database->removeTable("TABLE_name");
+```
+
+This method returns TRUE or FALSE 😇.
+
+### **hasTable**
+Check if a specific table exists with this method.
+
+```php
+<?php
+$result = $database->hasTable("TABLE_name");
+```
+
+It returns TRUE or FALSE 😯.
+
 ### **keys**
-   this method will return list of all
-   the items name available
-   ```php
-    <?php
-      $result = $table->key();
-  ```
-  this method returns an Array list 😉
-  
+Retrieve a list of all available table names using this method.
+
+```php
+<?php
+$result = $database->keys();
+```
+
+It returns an array list 😱.
+
+### **removeAllTable**
+Delete all available tables from the database using this method.
+
+```php
+<?php
+$result = $database->removeAllTable();
+```
+
+It returns TRUE or FALSE 😇.
+
+## Item Class
+When using the [openTable](#opentable) method, you can access the following methods:
+
+### **setItem**
+Create or set an item inside the database table using this method.
+
+```php
+<?php
+$result = $table->setItem("name", "value");
+```
+
+It returns TRUE or FALSE 😋.
+
+### **getItem**
+Retrieve an item from the database table using this method.
+
+```php
+<?php
+$item = $table->getItem("name");
+```
+
+This method returns the item value 😊.
+
+### **hasItem**
+Check if a specific item exists in the table with this method.
+
+```php
+<?php
+$result = $table->hasItem("name");
+```
+
+It returns TRUE or FALSE 😻.
+
+### **keys**
+Retrieve a list of all item names available in the table.
+
+```php
+<?php
+$result = $table->key();
+```
+
+It returns an array list 😉.
+
 ### **removeItem**
-   this method will remove the item name
-   given
-   ```php
-    <?php
-      $result = $table->removeItem("name");
-  ```
-  this method returns TRUE | FALSE 👼
-  
+Remove a specific item from the table using this method.
+
+```php
+<?php
+$result = $table->removeItem("name");
+```
+
+It returns TRUE or FALSE 👼.
+
 ### **removeAllItem**
-   this method will remove all the 
-   available items from the table
-   ```php
-    <?php
-      $result = $table->removeAllItem();
-  ```
-  this method returns TRUE | FALSE 👻
-  
+Remove all available items from the table using this method.
+
+```php
+<?php
+$result = $table->removeAllItem();
+```
+
+This method returns TRUE or FALSE 👻.
+
 ### **getAllItem**
-   this method will retrieve all items
-   on the database table
-   ```php
-    <?php
-      $items = $table->getAllItem();
-  ```
-  this method returns an Array Object 🍻
-  
- 
-# Php Version Support 🌠
- so far this framework works on
- `php` version `7.1.33` and previous php
- versions are yet to be tested 🎠
- 
+Retrieve all items from the database table using this method.
+
+```php
+<?php
+$items = $table->getAllItem();
+```
+
+This method returns an array object 🍻.
+
+# PHP Version Support 🌠
+So far, this framework works on PHP version `7.1.33`, and previous PHP versions are yet to be tested 🎠.
+
 # Show Love 👌
- was this framework help 🤔? 
- 
- wish to give me a shootout 🙌?
- 
- wish to collaborate with me 👷?
- 
- why don't you come hit me up 
- on [facebook📱](https://facebook.com/owens94819.me)
- 
+If you found this framework helpful,
+want to give a shoutout 🙌, 
+or wish to collaborate, 
+don't hesitate to reach out on [Facebook📱](https://facebook.com/owens94819.me). 
+Your feedback and support are greatly appreciated!
