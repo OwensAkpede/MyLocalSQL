@@ -1,4 +1,4 @@
-
+***don't forget to give this repo a star 🌟***
 # LocalSQL 🤖
 ![LocalSQL example image](basic.jpeg)
 
