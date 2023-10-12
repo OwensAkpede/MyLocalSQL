@@ -21,22 +21,20 @@ class LocalSQL
   
   public function openDB(string $name) {
     $name = __san__($name, FALSE);
-
     $DB = $this->DB;
     $exist = $DB->query(
       "SELECT SCHEMA_NAME FROM
        INFORMATION_SCHEMA.SCHEMATA WHERE
        SCHEMA_NAME='$name'")
-    ->num_rows;
-    if ($exist > 0) {
+    ->num_rows>0;
+    if ($exist) {
       return __openDB__($name, $this, $DB);
     } else {
       try {
         $DB->query("CREATE DATABASE `$name`");
         return __openDB__($name, $this, $DB);
       } catch (Exception $Err) {
-        echo($Err);
-        throw new Exception("Error while attempting to create DATABASE".$name);
+        throw new Exception("Error while attempting to create DATABASE");
       }
     }
   }
@@ -80,6 +78,7 @@ class LocalSQL
       while ($n = $result->fetch_assoc()) {
         array_push($arr, $n["Database"]);
       }
+            $result->free();
     }
     return $arr;
   }
@@ -150,6 +149,7 @@ class Table
         while($n = $result->fetch_assoc()){
         array_push($arr,$n["Tables_in_my db"]);
         }
+             $result->free(); 
       } 
      return $arr;
   }
@@ -168,7 +168,7 @@ if ($result) {
         $table = $row[0];
         $this->DB->query("DROP TABLE `$table`");
     }
-   // $result->close();
+        $result->free(); 
 }
 
   }
@@ -179,6 +179,8 @@ class Item
 {
   private $DB;
   private $name;
+  private $CHUNK_SIZE = 1024;
+  private $CHUNK_OFFSET = 0;
   public function __construct(string $name, mysqli $DB) {
     $this->name = $name;
     $this->DB = $DB;
@@ -206,7 +208,32 @@ class Item
    INSERT INTO `$this->name` (name, value) VALUES ('$name','$value')
    ");
     }
+  return TRUE;
+  }
+  
+  public function appendItem(string $name, string $value) {
+    $name = __san__($name, FALSE);
+    $type = "string";
 
+    $value = __san__($value, TRUE);
+
+    $result = $this->DB->query("
+   SELECT name FROM `$this->name`
+   WHERE name = '$name'
+   ");
+
+    if ($result->num_rows > 0) {
+      $this->DB->query("
+   UPDATE `$this->name`
+   SET value = CONCAT(value, '$value')
+   WHERE name = '$name'
+   ");
+    } else {
+      $this->DB->query("
+   INSERT INTO `$this->name` (name, value) VALUES ('$name','$value')
+   ");
+    }
+    return TRUE;
   }
   
   public function getItem(string $name){
@@ -216,8 +243,51 @@ class Item
     WHERE name = '$name'
     ");
     if($result->num_rows > 0){
-    return $result->fetch_assoc()["value"];
+    $val = $result->fetch_assoc()["value"];
+     $result->free();
+    return $val;
     }
+  }
+  
+  public function getChunkItem(string $name,object $callback){
+    $name = __san__($name, FALSE);
+   
+    global $foo;
+    global $next;
+    global $offset;
+    global $size;
+    global $tb_name;
+    global $name;
+    
+    $next = function(){
+    global $foo;
+    global $next;
+    global $offset;
+    global $size;
+    global $tb_name;
+    global $name;
+
+    $result = $this->DB->query("
+    SELECT SUBSTRING(value, $offset + 1, $size) AS value 
+    FROM `$tb_name`  
+    WHERE name = '$name'
+    ");
+
+    $val = $result->fetch_assoc()["value"];
+    $result->free();
+    $offset += $size;
+    if (!$val[0]) {
+      $val = NULL;
+    }
+     $foo($val, $next);
+    };
+    
+    $foo = $callback;
+    $tb_name = $this->name;
+    $offset = $this->CHUNK_OFFSET;
+    $size = $this->CHUNK_SIZE;
+    
+    $next();
   }
   
   public function hasItem(string $name){
@@ -242,6 +312,7 @@ class Item
       while ($n = $result->fetch_assoc()) {
         array_push($arr, $n["name"]);
       }
+      $result->free();
     }
     return $arr;
   }
@@ -272,9 +343,12 @@ class Item
       while ($n = $result->fetch_assoc()) {
         $arr[$n["name"]]=$n["value"];
       }
+      $result->free();
     }
     return $arr;
   }
+  
+  
 }
 
 
@@ -284,6 +358,7 @@ function __san__(string $v, $is_val) {
   } else {
     $v = preg_replace("/\n\r|\n|\r\n/i", " ", $v);
     $v = preg_replace("/([`'])/i", "\\\\$0", $v);
+    $v = trim($v);
   }
   return $v;
 }

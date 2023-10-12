@@ -152,10 +152,26 @@ Create or set an item inside the database table using this method.
 
 ```php
 <?php
-$result = $table->setItem("name", "value");
+  $table->setItem("name", "value");
 ```
 
-It returns TRUE or FALSE 😋.
+### **appendItem**
+Create or append(concat) an item to an existing item inside the database table using this method.
+
+```php
+<?php
+ $table->appendItem("name", "value to append");
+```
+A good use case could be with the file system
+```php
+<?php
+$file_handle = fopen("my_large_file.txt", "r");
+
+while(!feof($file_handle)){
+  $chunk = fread($file_handle, 1024);
+  $table->appendItem("name", $chunk);
+}
+```
 
 ### **getItem**
 Retrieve an item from the database table using this method.
@@ -166,6 +182,39 @@ $item = $table->getItem("name");
 ```
 
 This method returns the item value 😊.
+
+### **getChunkItem**
+Retrieve a large item from the database table in chunks using this method.
+
+this method takes two parameters, the `name` and `callback`.
+- ***callback*** the callback function is fired with
+two arguments, the `value` and a `method`
+```php
+<?php
+$table->getChunkItem("name", function($chunk, $continue){
+  if($chunk){
+  echo($chunk);
+  $continue();
+  }
+});
+```
+A good use case could also be with the file system
+```php
+<?php
+$file_handle = fopen("large.txt", "w");
+
+$localStorage->getChunkItem("name", function ($chunk, $continue){
+  global $file_handle;
+  if($chunk){ 
+    fwrite($file_handle, $chunk);
+    $continue();
+  }else{
+    fclose($file_handle);
+  }
+}
+);
+
+```
 
 ### **hasItem**
 Check if a specific item exists in the table with this method.
