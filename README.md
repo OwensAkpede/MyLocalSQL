@@ -169,7 +169,7 @@ $file_handle = fopen("my_large_file.txt", "r");
 
 while(!feof($file_handle)){
   $chunk = fread($file_handle, 1024);
-  $table->appendItem("name", $chunk);
+  $table->appendItem("my file.txt", $chunk);
 }
 ```
 
@@ -203,7 +203,7 @@ A good use case could also be with the file system
 <?php
 $file_handle = fopen("large.txt", "w");
 
-$localStorage->getChunkItem("name", function ($chunk, $continue){
+$table->getChunkItem("name", function ($chunk, $continue){
   global $file_handle;
   if($chunk){ 
     fwrite($file_handle, $chunk);
