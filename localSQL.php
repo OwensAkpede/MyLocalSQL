@@ -276,7 +276,7 @@ class Item
     $val = $result->fetch_assoc()["value"];
     $result->free();
     $offset += $size;
-    if (!$val[0]) {
+    if (!$val) {
       $val = NULL;
     }
      $foo($val, $next);
